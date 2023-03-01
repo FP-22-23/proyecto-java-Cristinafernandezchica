@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author corre
- *
- */
-module ProyectoJava {
-}

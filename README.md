@@ -93,5 +93,5 @@ Representa un tiroteo fatal. También tenemos implementada su interfaz TiroteoFa
 - Genero, enumerado. Puede tomar los valores *F*, *M*.
 - MenorMayor, enumerado. Puede tomar los valores *Menor*, *Mayor*.
 
-### Test
+### Test - TestTiroteoFatalImpl
 Clase de test para probar los métodos de tipo TiroteoFatal.

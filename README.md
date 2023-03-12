@@ -1,4 +1,4 @@
-# Proyecto del Segundo Cuatrimestre Fundamentos de Programación (Curso  \<2022\>/\<2023\>)
+# Proyecto del Segundo Cuatrimestre Fundamentos de Programación (Curso  2022 \ 2023)
 Autor/a: Cristina Fernández Chica   uvus: RFM6490
 
 

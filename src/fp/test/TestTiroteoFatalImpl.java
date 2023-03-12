@@ -33,6 +33,11 @@ public class TestTiroteoFatalImpl {
 		System.out.println(t3.getCoordenadas());
 		System.out.println(t3.getDistancia(t2));
 		System.out.println(t3.getPolicias());
+		System.out.println(t2.compareTo(t3));
+		System.out.println(t1.compareTo(t3));
+		System.out.println(t2.getSignosEnfermedadMental());
+		System.out.println(t3.getArma());
+		System.out.println(t3.getFecha());
 	}
 
 }

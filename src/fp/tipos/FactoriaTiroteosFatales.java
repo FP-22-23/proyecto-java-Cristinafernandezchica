@@ -5,11 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import fp.common.Arma;
 import fp.common.Coordenadas;
@@ -18,13 +16,20 @@ import fp.utiles.Checkers;
 
 public class FactoriaTiroteosFatales {
 	
-	public static List<TiroteoFatal> leerTiroteosFatales(String rutaFichero){
-		List<TiroteoFatal> res = new ArrayList<TiroteoFatal>();
+	/**
+	 * @param rutaFichero Nombre del fichero de datos de tiroteos fatales.
+	 * @return Devuelve un objeto de tipo TiroteosFatalesImpl con los datos del fichero 
+	 */
+	public static TiroteosFatalesImpl leerTiroteosFatales(String rutaFichero){
+		TiroteosFatalesImpl res = null;
+		
 		try {
-			Stream<TiroteoFatal> tiroteos = Files.lines(Paths.get(rutaFichero))
+			List<TiroteoFatalImpl> tiroteos = Files.lines(Paths.get(rutaFichero))
 					.skip(1)
-					.map(FactoriaTiroteosFatales::parseaTiroteoFatal);
-			res = tiroteos.collect(Collectors.toList());
+					.map(FactoriaTiroteosFatales::parseaTiroteoFatal)
+					.collect(Collectors.toList());
+			
+			res = new TiroteosFatalesImpl(tiroteos);
 		}
 		catch(IOException e){
 			System.out.println("No se ha encontrado el fichero" + rutaFichero);
@@ -51,9 +56,6 @@ public class FactoriaTiroteosFatales {
 		Boolean signosEnfermedadMental = parseaBooleano(trozos[10].trim());
 		Boolean camaraCuerpo = parseaBooleano(trozos[11].trim());
 		String[] policia = trozos[12].split(";");
-		if(policia.length != 3) {
-			throw new IllegalArgumentException("La lista de policias es incorrecta solo puede contener 3 policias");
-		}
 		List<String> policias= new LinkedList<String>();
 		policias.add(policia[0].trim());
 		policias.add(policia[1].trim());

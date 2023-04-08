@@ -1,11 +1,18 @@
 package fp.tipos;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import fp.common.Coordenadas;
 
 public class TiroteosFatalesImpl {
 	
@@ -36,19 +43,28 @@ public class TiroteosFatalesImpl {
 	}
 
 	
-	// Obtener numero de elementos
+	
+	/**
+	 * @return El número de tiroteos almacenado en el objeto TiroteoFatal 
+	 */
 	public Integer getNumeroTiroteos() {
 		return tiroteosFatales.size();
 	}
 	
-	// Añadir un elemento
+	/**
+	 * @param t tiroteo fatal
+	 * Añade un tiroteo fatal al objeto 
+	 */
 	public void anadirTiroteo(TiroteoFatalImpl t) {
 		if (!tiroteosFatales.contains(t)) {
 		tiroteosFatales.add(t);
 		}
 	}
 	
-	// Añadir una colección de elementos
+	/**
+	 * @param coleccionTiroteos colección de tiroteos fatales
+	 * Añade todos los tiroteos fatales en la colección al objeto 
+	 */
 	// Uno por uno (recorriendo la colección de elementos)
 	public void anadirTiroteos(Collection<TiroteoFatalImpl> coleccionTiroteos) {
 		for (TiroteoFatalImpl tiroteo: coleccionTiroteos) {
@@ -63,7 +79,10 @@ public class TiroteosFatalesImpl {
 		tiroteosFatales.addAll(coleccionTiroteos);
 	}
 	
-	// Eliminar un elemento
+	/**
+	 * @param t tiroteo fatal
+	 * Elimina el tiroteo pasado como parámetro 
+	 */
 	public void eliminaTiroteo(TiroteoFatalImpl t) {
 		if(tiroteosFatales.contains(t)) {
 			tiroteosFatales.remove(t);
@@ -72,21 +91,120 @@ public class TiroteosFatalesImpl {
 	
 	
 	// Métodos que siguen tratamientos secuenciales
+	/**
+	 * FUNCION TIPO EXISTE
+	 * 
+	 * @param anyo Año concreto
+	 * @param coste Coste de los recursoso utiliazados
+	 * @return Devuelve un Booleano que nos indica si existe un tiroteo ocurrido en el año 
+	 * pasado como parámetro (anyo) y con un coste de recursos utilizados superior al valor
+	 * pasado como parámetro (coste). Si no hay ningún tiroteo que cumpla esta condición,
+	 * devuleve false.
+	 */
+	public Boolean existeTiroteoAnyoCoste(Integer anyo, Double coste) {
+		Boolean res = false;
+		for(TiroteoFatalImpl t: tiroteosFatales) {
+			if(Integer.valueOf(t.getFecha().getYear()).equals(anyo) && t.getCosteRecursos() > coste) {
+				res = true;
+				break;
+			}
+		}
+		return res;
+	}
 	
-	// 1. Existe o para todo (a escoger)
+	/**
+	 * FUNCION TIPO MEDIA
+	 * 
+	 * @param anyo Año concreto
+	 * @return  Devuelve la media de edad de las personas fallecidas en los tiroteos ocurridos 
+	 * en el año pasado como parámetro (anyo).
+	 */
+	public Double getMediaEdadAnyo(Integer anyo) {
+		Integer suma = 0;
+		Integer cont = 0;
+		for(TiroteoFatalImpl t: tiroteosFatales) {
+			if(Integer.valueOf(t.getFecha().getYear()).equals(anyo)) {
+				suma += t.getEdad();
+				cont += 1;
+			}
+		}
+		Double res;
+		if(cont != 0) {
+			res = Double.valueOf(suma/cont);
+		}
+		else {
+			res = null;
+		}
+		return res;
+	}
 	
-	// 2. contador, suma o media (a escoger)
+	/**
+	 * FUNCION TIPO SELeCCION CON FILTRADO
+	 * 
+	 * @param coord Coordenas concretas
+	 * @param dist Distancia
+	 * @return Devuelve un conjunto con los tiroteos ocurridos en una distancia marcada por 
+	 * el parámetro dist. La dsitancia con la que compararemos dist será la resultante de 
+	 * hacer getDistancia() entre las coordenadas de un tiroteo y las coordenadas pasadas 
+	 * como parámetro (coord)
+	 */
+	public Set<TiroteoFatalImpl> getTiroteosFatalesCercanosUbicacion(Coordenadas coord, Double dist){
+		Set<TiroteoFatalImpl> res = new HashSet<>();
+		for(TiroteoFatalImpl t: tiroteosFatales) {
+			Double distancia = t.getCoordenadas().getDistancia(coord);
+			if(distancia <= dist) {
+				res.add(t);
+			}
+		}
+		return res;
+	}
 	
-	// 3. selección con filtraxo
+	/**
+	 * FUNCION TIPO MAP DE AGRUPACIÓN
+	 * 
+	 * @return Devuelve un Map en el que las claves son fechas y los valores son el conjunto de 
+	 * tiroteos ocurridos en esa fecha.
+	 */
+	public Map<LocalDate, Set<TiroteoFatalImpl>> getTiroteosFatalesPorFecha(){
+		 Map<LocalDate, Set<TiroteoFatalImpl>> res = new HashMap<LocalDate, Set<TiroteoFatalImpl>>();
+		 
+		 for(TiroteoFatalImpl t: tiroteosFatales) {
+			 LocalDate key = t.getFecha();
+			 if(res.containsKey(key)) {
+				 res.get(key).add(t);
+			 }
+			 else {
+				 Set<TiroteoFatalImpl> value = new HashSet<>();
+				 value.add(t);
+				 res.put(key, value);
+			 }
+		 }
+		 return res;
+	}
 	
-	// 4. método agrupación que devuelva un Map en el que las claves sean una propiedad
-	// 	  del tipo base y los valores una colección (List, Set, SortedSet) de objetos del tipo base
-	
-	
-	// 5. método de acumulación que devuelva un Map en el que las claves sean una propiedad 
-	// del tipo base, y los valores el conteo o la suma de los objetos del tipo base almacenados 
-	// en el contenedor que tienen como valor esa propiedad.
-	
+	/**
+	 * FUNCION TIPO MAP CONTADOR (ACUMULADOR)
+	 * 
+	 * @return  Devuelve un Map en el que las clves son edaes y los valores son la cantidad de 
+	 * tiroteos en las que ha fallecido una persona con la edad presente en la clave.
+	 */
+	public Map<Integer, Long> getNumeroTiroteosPorEdad(){
+		Map<Integer, Long> res = new HashMap<Integer, Long>();
+		
+		for(TiroteoFatalImpl t: tiroteosFatales) {
+			Integer key = t.getEdad();
+			if(res.containsKey(key)) {
+				Long value = res.get(key);
+				value += 1;
+				res.put(key,  value);
+			}
+			else {
+				Long value = 1L;
+				res.put(key,  value);
+			}
+		}
+		return res;
+	}
 	
 	
 	

@@ -87,11 +87,49 @@ Representa un tiroteo fatal. También tenemos implementada su interfaz TiroteoFa
  
 - *Double getDistancia(TiroteoFatalImpl t)*: Devuelve la distancia entre dos lugares.
 
-#### Tipos auxiliares
+**Tipos auxiliares**
 - Coordenadas, record. Este agrupa la latitud y la longitud para formar así las coordendas.
 - Arma, enumerado. Puede tomar los valores *gun*, *unarmed*, *vehicle*, *knife*, *undetermined*, *sword*, *hammer*, *screwdriver*, *explosives*, *taser*, *ax*.
 - Genero, enumerado. Puede tomar los valores *F*, *M*.
 - MenorMayor, enumerado. Puede tomar los valores *Menor*, *Mayor*.
+
+### Factoría - FactoriaTiroteosFatales
+
+Clase de factoría para construir objetos de tipo TiroteosFatalesImpl.
+
+- TiroteosFatalesImpl leerTiroteosFatales(String rutaFichero): Crea un objeto de tipo TiroteosFatalesImpl a partir de la información recogida en el archivo csv, cuya ruta se da como parámetro.
+
+### Tipo Contenedor - TiroteosFatalesImpl
+
+Clase contenedora de los objetos de tipo TiroteoFatalImpl.
+
+**Propiedades**:
+
+- *tiroteosFatales*, de tipo List<TiroteoFatalImpl>, consultable. Lista de tiroteos fatales.
+- *numero tiroteos*, de tipo Integer, consultable. Número de tiroteos fatales del contenedor.
+
+**Constructores**:
+
+- C1: Constructor por defecto. Crear un objeto de tipo TiroteosFatalesImpl sin ningún tiroteo guardado.
+- C2: Constructor con parámetro de tipo Collection<TiroteoFatalImpl>. Crea un objeto de tipo TiroteosFatalesImpl con los tiroteos incluidos en la colección dada como parámetro.
+- C3: Constructor con un parámetro de tipo Stream<TiroteoFatalImpl>. Crea un objeto de tipo TiroteosFatalesImpl con los tiroteos incluidos en el Stream dado.
+
+**Criterio de igualdad**: Dos tiroteos son iguales si lo es su propiedad tiroteosFatales.
+
+**Otras operaciones**:
+- void anadirTiroteo(TiroteoFatalImpl t): Añade un tiroteo fatal al objeto.
+- void anadirTiroteos(Collection<TiroteoFatalImpl> coleccionTiroteos): Añade varios tiroteos al objeto.
+- Boolean existeTiroteoAnyoCoste(Integer anyo, Double coste): Devuelve un Booleano que nos indica si existe un tiroteo ocurrido en el año 
+pasado como parámetro (anyo) y con un coste de recursos utilizados superior al valor 
+pasado como parámetro (coste). Si no hay ningún tiroteo que cumpla esta condición, 
+devuleve false.
+- Double getMediaAnyo(Integer anyo): Devuelve la media de edad de las personas fallecidas en los tiroteos ocurridos en el año pasado como parámetro (anyo).
+- Set<TiroteoFatalImpl> getTiroteosFatalesCercanosUbicacion(Coordenadas coord, Double dist): Devuelve un conjunto con los tiroteos ocurridos en una distancia marcada por 
+el parámetro dist. La dsitancia con la que compararemos dist será la resultante de 
+hacer getDistancia() entre las coordenadas de un tiroteo y las coordenadas pasadas 
+como parámetro (coord).
+- Map<LocalDate, Set<TiroteoFatalImpl>> getTiroteosFatalesPorFecha(): Devuelve un Map en el que las claves son fechas y los valores son el conjunto de tiroteos ocurridos en esa fecha.
+- Map<Integer, Long> getNumeroTiroteosPorEdad(): Devuelve un Map en el que las claves son edades y los valores son la cantidad de tiroteos en los que ha fallecido una persona con la edad presente en la clave.
 
 ### Test - TestTiroteoFatalImpl
 Clase de test para probar los métodos de tipo TiroteoFatal.

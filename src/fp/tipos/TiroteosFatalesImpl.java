@@ -65,17 +65,7 @@ public class TiroteosFatalesImpl {
 	 * @param coleccionTiroteos colección de tiroteos fatales
 	 * Añade todos los tiroteos fatales en la colección al objeto 
 	 */
-	// Uno por uno (recorriendo la colección de elementos)
 	public void anadirTiroteos(Collection<TiroteoFatalImpl> coleccionTiroteos) {
-		for (TiroteoFatalImpl tiroteo: coleccionTiroteos) {
-			if (!tiroteosFatales.contains(tiroteo)){
-				tiroteosFatales.add(tiroteo);
-			}
-		}
-	}
-	
-	// La colección entera
-	public void anadirTiroteos2(Collection<TiroteoFatalImpl> coleccionTiroteos) {
 		tiroteosFatales.addAll(coleccionTiroteos);
 	}
 	
@@ -146,7 +136,7 @@ public class TiroteosFatalesImpl {
 	 * @return Devuelve un conjunto con los tiroteos ocurridos en una distancia marcada por 
 	 * el parámetro dist. La dsitancia con la que compararemos dist será la resultante de 
 	 * hacer getDistancia() entre las coordenadas de un tiroteo y las coordenadas pasadas 
-	 * como parámetro (coord)
+	 * como parámetro (coord).
 	 */
 	public Set<TiroteoFatalImpl> getTiroteosFatalesCercanosUbicacion(Coordenadas coord, Double dist){
 		Set<TiroteoFatalImpl> res = new HashSet<>();
@@ -186,7 +176,7 @@ public class TiroteosFatalesImpl {
 	 * FUNCION TIPO MAP CONTADOR (ACUMULADOR)
 	 * 
 	 * @return  Devuelve un Map en el que las clves son edaes y los valores son la cantidad de 
-	 * tiroteos en las que ha fallecido una persona con la edad presente en la clave.
+	 * tiroteos en los que ha fallecido una persona con la edad presente en la clave.
 	 */
 	public Map<Integer, Long> getNumeroTiroteosPorEdad(){
 		Map<Integer, Long> res = new HashMap<Integer, Long>();

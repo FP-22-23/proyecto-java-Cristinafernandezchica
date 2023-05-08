@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import fp.common.Arma;
 import fp.common.Coordenadas;
@@ -18,7 +19,7 @@ public class FactoriaTiroteosFatales {
 	
 	/**
 	 * @param rutaFichero Nombre del fichero de datos de tiroteos fatales.
-	 * @return Devuelve un objeto de tipo TiroteosFatalesImpl con los datos del fichero 
+	 * @return Devuelve un objeto de tipo TiroteosFatalesImpl con los datos del fichero mediante List
 	 */
 	public static TiroteosFatalesImpl leerTiroteosFatales(String rutaFichero){
 		TiroteosFatalesImpl res = null;
@@ -28,6 +29,27 @@ public class FactoriaTiroteosFatales {
 					.skip(1)
 					.map(FactoriaTiroteosFatales::parseaTiroteoFatal)
 					.collect(Collectors.toList());
+			
+			res = new TiroteosFatalesImpl(tiroteos);
+		}
+		catch(IOException e){
+			System.out.println("No se ha encontrado el fichero" + rutaFichero);
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	/**
+	 * @param rutaFichero Nombre del fichero de datos de tiroteos fatales.
+	 * @return Devuelve un objeto de tipo TiroteosFatalesImpl con los datos del fichero mediante Stream. 
+	 */
+	public static TiroteosFatalesImpl leerTiroteosFatalesStream(String rutaFichero){
+		TiroteosFatalesImpl res = null;
+		
+		try {
+			Stream<TiroteoFatalImpl> tiroteos = Files.lines(Paths.get(rutaFichero))
+													 .skip(1)
+													 .map(FactoriaTiroteosFatales::parseaTiroteoFatal);
 			
 			res = new TiroteosFatalesImpl(tiroteos);
 		}

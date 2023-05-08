@@ -97,7 +97,8 @@ Representa un tiroteo fatal. También tenemos implementada su interfaz TiroteoFa
 
 Clase de factoría para construir objetos de tipo TiroteosFatalesImpl.
 
-- TiroteosFatalesImpl leerTiroteosFatales(String rutaFichero): Crea un objeto de tipo TiroteosFatalesImpl a partir de la información recogida en el archivo csv, cuya ruta se da como parámetro.
+- TiroteosFatalesImpl leerTiroteosFatales(String rutaFichero): Crea un objeto de tipo TiroteosFatalesImpl a partir de la información recogida en el archivo csv, cuya ruta se da como parámetro. (Con List)
+- TiroteosFatalesImpl leerTiroteosFatalesStream(String rutaFichero): Crea un objeto de tipo TiroteosFatalesImpl a partir de la información recogida en el archivo csv, cuya ruta se da como parámetro. (Con Stream)
 
 ### Tipo Contenedor - TiroteosFatalesImpl
 
@@ -117,6 +118,8 @@ Clase contenedora de los objetos de tipo TiroteoFatalImpl.
 **Criterio de igualdad**: Dos tiroteos son iguales si lo es su propiedad tiroteosFatales.
 
 **Otras operaciones**:
+
+**Bucles**
 - void anadirTiroteo(TiroteoFatalImpl t): Añade un tiroteo fatal al objeto.
 - void anadirTiroteos(Collection<TiroteoFatalImpl> coleccionTiroteos): Añade varios tiroteos al objeto.
 - Boolean existeTiroteoAnyoCoste(Integer anyo, Double coste): Devuelve un Booleano que nos indica si existe un tiroteo ocurrido en el año 
@@ -130,6 +133,38 @@ hacer getDistancia() entre las coordenadas de un tiroteo y las coordenadas pasad
 como parámetro (coord).
 - Map<LocalDate, Set<TiroteoFatalImpl>> getTiroteosFatalesPorFecha(): Devuelve un Map en el que las claves son fechas y los valores son el conjunto de tiroteos ocurridos en esa fecha.
 - Map<Integer, Long> getNumeroTiroteosPorEdad(): Devuelve un Map en el que las claves son edades y los valores son la cantidad de tiroteos en los que ha fallecido una persona con la edad presente en la clave.
+
+**Stream**
+
+Bloque I
+- Boolean existeTiroteoAnyoCosteStream(Integer anyo, Double coste): Devuelve un Booleano que nos indica si existe un tiroteo ocurrido en el año 
+pasado como parámetro (anyo) y con un coste de recursos utilizados superior al valor
+pasado como parámetro (coste). Si no hay ningún tiroteo que cumpla esta condición,
+devuleve false.
+- Double getMediaEdadAnyoStream(Integer anyo): Devuelve la media de edad de las personas fallecidas en los tiroteos ocurridos 
+en el año pasado como parámetro (anyo).
+- Set<TiroteoFatalImpl> getTiroteosFatalesCercanosUbicacionStream(Coordenadas coord, Double dist): Devuelve un conjunto con los tiroteos ocurridos en una distancia marcada por 
+el parámetro dist. La dsitancia con la que compararemos dist será la resultante de 
+hacer getDistancia() entre las coordenadas de un tiroteo y las coordenadas pasadas 
+como parámetro (coord).
+- TiroteoFatalImpl getTiroteoFatalMayorCosteAnyo(Integer anyo): Devuelve el tiroteo fatal con mayor coste de recursos utilizados en el año 
+pasado como parámetro. Si no existe devuelve null.
+- List<TiroteoFatalImpl> getTiroteosFatalesCiudadOrdenados(String ciudad): Devuelve una lista de tiroteos fatales sucedidos en la ciudad pasada como parámetro
+y ordenados según la fecha en que ocurrieron y la edad del/la tiroteado/a.
+
+Bloque II
+- Map<LocalDate, Set<TiroteoFatalImpl>> getTiroteosFatalesPorFechaStream(): Devuelve un Map en el que las claves son fechas y los valores son el conjunto de 
+tiroteos ocurridos en esa fecha.
+- Map<Integer, Set<Integer>> getConjuntoEdadesPorAnyo(): Devuelve un Map en el que las claves son los años y los valores son el conjunto 
+de las edades de los tiroteados en cada año.
+- Map<LocalDate, Double> getCosteMayorPorFecha(): Devuelve un Map en el que las claves son las fechas de los tiroteos y 
+los valores son el coste de recursos máximo de cada una de esas fechas.
+- SortedMap<String, List<String>> getNPrimerosTiroteadosPorCiudad(Integer n): Devuelve un SortedMap en el que las clves son cada una de las ciudades.
+donde se ha producido algún tiroteo y los valores son listas con los nombres 
+de los n primeros tiroteados en esa ciudad.
+(Utiliza una función auxiliar que se describe a continuación)
+- List<String> fAux(List<TiroteoFatalImpl> l, Integer n): Devuelve una lista en la que se encuentran los n primeros tiroteados de cada ciudad.
+- String getCiudadMayorNumeroTiroteosFatales(): Devuelve la ciudad con un mayor número de tiroteos fatales.
 
 ### Test - TestTiroteoFatalImpl
 Clase de test para probar los métodos de tipo TiroteoFatal.
